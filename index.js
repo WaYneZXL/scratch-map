@@ -13,7 +13,7 @@ var config = require('./config.js');
 passport.use(new Strategy({
     clientID: process.env.CLIENT_ID || config.CLIENT_ID,
     clientSecret: process.env.CLIENT_SECRET || config.CLIENT_SECRET,
-    callbackURL: 'https://localhost:3000/login/facebook/return'
+    callbackURL: 'https://blueberry-shortcake-17164.herokuapp.com/login/facebook/return'
   },
   function(accessToken, refreshToken, profile, cb) {
     // In this example, the user's Facebook profile is supplied as the user
@@ -89,4 +89,4 @@ app.get('/profile',
     res.render('profile', { user: req.user });
   });
 
-app.listen(3000);
+app.listen(process.env.PORT || 3000);
