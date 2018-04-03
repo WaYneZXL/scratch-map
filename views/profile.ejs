@@ -1,8 +1,10 @@
-<p>
-ID: <%= user.id %><br/>
-Username: <%= user.username %><br/>
-Name: <%= user.displayName %><br/>
-<% if (user.emails) { %>
-Email: <%= user.emails[0].value %><br/>
-<% } %>
-</p>
+<div>
+  <p>Provider: <%= user.provider %></p>
+  <p>ID: <%= user.id %></p>
+  <p>Display Name: <%= user.displayName %></p>
+  <p>Family Name: <%= user.name.familyName %></p>
+  <p>Given Name: <%= user.name.givenName %></p>
+  <p>Middle Name: <%= user.name.middleName %></p>
+  <p>Emails: <%= user.emails %></p>
+  <p>Photo: <%= user.photos %></p>
+</div>
