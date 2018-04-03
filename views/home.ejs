@@ -2,4 +2,14 @@
 	<p>Welcome! Please <a href="/login">log in</a>.</p>
 <% } else { %>
 	<p>Hello, <%= user.username %>. View your <a href="/profile">profile</a>.</p>
+	<div>
+		Provider: <%= user.provider %>
+		ID: <%= user.id %>
+		Display Name: <%= user.displayName %>
+		Family Name: <%= user.name.familyName %>
+		Given Name: <%= user.name.givenName %>
+		Middle Name: <%= user.name.middleName %>
+		Emails: <%= user.emails %>
+		Photo: <%= user.photos %>
+	</div>
 <% } %>
