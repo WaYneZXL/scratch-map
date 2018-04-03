@@ -3,13 +3,13 @@
 <% } else { %>
 	<p>Hello, <%= user.username %>. View your <a href="/profile">profile</a>.</p>
 	<div>
-		Provider: <%= user.provider %>
-		ID: <%= user.id %>
-		Display Name: <%= user.displayName %>
-		Family Name: <%= user.name.familyName %>
-		Given Name: <%= user.name.givenName %>
-		Middle Name: <%= user.name.middleName %>
-		Emails: <%= user.emails %>
-		Photo: <%= user.photos %>
+		<p>Provider: <%= user.provider %></p>
+		<p>ID: <%= user.id %></p>
+		<p>Display Name: <%= user.displayName %></p>
+		<p>Family Name: <%= user.name.familyName %></p>
+		<p>Given Name: <%= user.name.givenName %></p>
+		<p>Middle Name: <%= user.name.middleName %></p>
+		<p>Emails: <%= user.emails %></p>
+		<p>Photo: <%= user.photos %></p>
 	</div>
 <% } %>
