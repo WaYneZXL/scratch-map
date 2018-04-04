@@ -1,13 +1,12 @@
 <div>
-  <p>Provider: <%= user.provider %></p>
-  <p>ID: <%= user.id %></p>
-  <p>Display Name: <%= user.displayName %></p>
+  <p>ID: <%= user.facebookId %></p>
+  <p>Display Name: <%= user.name %></p>
 </div>
 <div>
   Other Users:
   <ul>
-    <% allPersons.forEach( (person) => { %>
-      <li> User Name: <%= person.name %></li>
+    <% allUsers.forEach((user) => { %>
+      <li> User Name: <%= user.name %></li>
     <% }); %>
   </ul>
 </div>
