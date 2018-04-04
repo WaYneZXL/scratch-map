@@ -77,23 +77,20 @@ app.use(require('express-session')({ secret: 'keyboard cat', resave: true, saveU
 app.use(passport.initialize());
 app.use(passport.session());
 
-function createRandomUser (req, res, next) {
-  const randId = Math.floor(Math.random * 100);
-  const randName = Math.floor(Math.random * 100);
-  const randEmail = Math.floor(Math.random * 100);
-  const randUser = new User({
-    'id': randId,
-    'name': randName,
-    'email': randEmail
-  });
-  randUser.save((err) => {
-    res.send("Error: " + err);
-  });
-  next();
-}
+const testUser = new User({
+  id: "213",
+  name: "Kyle Jensen",
+  email: "kyle@yale.edu"
+});
+
+testUser.save((err) => {
+  if (err) {
+    console.log(err);
+  }
+});
 
 // Define routes.
-app.get('/', createRandomUser,
+app.get('/',
   (req, res) => {
     res.render('home', { user: req.user });
   });
@@ -114,7 +111,15 @@ app.get('/login/facebook/return',
 app.get('/profile',
   require('connect-ensure-login').ensureLoggedIn(),
   (req, res) => {
-    res.render('profile', {user: req.user });
+    User.find((err, allUsers) => {
+      if (err) {
+        res.send('Error: ' + err);
+      } else if (allUsers.length === 0) {
+        res.send('No users.');
+      } else {
+        res.render('profile', {user: req.user, allUsers: allUsers});
+      }
+    });
   });
 
 app.listen(process.env.PORT || 3000);

@@ -3,3 +3,12 @@
   <p>ID: <%= user.id %></p>
   <p>Display Name: <%= user.displayName %></p>
 </div>
+<div>
+  Other Users:
+  <ul>
+    <% allUsers.forEach( (user) => { %>
+      <li> User ID: <%= user.id %></li>
+      <li> User Name: <%= user.name %></li>
+    <% }); %> 
+  </ul>
+</div>
