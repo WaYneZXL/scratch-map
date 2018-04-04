@@ -115,7 +115,7 @@ app.get('/profile/:name', (req, res) => {
     name: req.params.name
   });
   newUser.save((err) => {
-    if (err) => {
+    if (err) {
       res.send('Error: ' + err);
     }
   });
