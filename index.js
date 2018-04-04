@@ -2,8 +2,6 @@ var express = require('express');
 var passport = require('passport');
 var Strategy = require('passport-facebook').Strategy;
 var config = require('./config.js');
-var mongoose = require('mongoose');
-var User = require('./models/User.js');
 
 // Configure the Facebook strategy for use by Passport.
 //
@@ -53,6 +51,8 @@ var app = express();
 app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
 
+var mongoose = require('mongoose');
+var User = require('./models/User.js');
 mongoose.connect(config.MONGO_URL);
 
 // Use application-level middleware for common functionality, including
