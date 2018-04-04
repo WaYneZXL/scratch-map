@@ -77,13 +77,23 @@ app.use(require('express-session')({ secret: 'keyboard cat', resave: true, saveU
 app.use(passport.initialize());
 app.use(passport.session());
 
-const testUser = new User({
-  // id: "213",
-  name: "Kyle Jensen",
-  email: "kyle@yale.edu"
+const testUser1 = new User({
+  name: "Edward",
+  email: "edward@yale.edu"
 });
 
-testUser.save((err) => {
+testUser1.save((err) => {
+  if (err) {
+    console.log(err);
+  }
+});
+
+const testUser2 = new User({
+  name: "Xialong",
+  email: "xialong@yale.edu"
+});
+
+testUser2.save((err) => {
   if (err) {
     console.log(err);
   }
