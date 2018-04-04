@@ -108,7 +108,7 @@ app.get('/profile',
     });
   });
 
-app.get('/profile/:name', (req, res) => {
+app.get('/:name', (req, res) => {
   const newPerson = new Person({
     name: req.params.name
   });
