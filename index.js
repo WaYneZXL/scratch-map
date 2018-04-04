@@ -33,11 +33,13 @@ passport.use(new FacebookStrategy({
           const newUser = new User();
           newUser.id    = profile.id;
           newUser.token = token;
-          newUser.name  = profile.name.givenName + ' ' + profile.name.familyName;
-          newUser.email = profile.emails[0].value;
+          newUser.name  = profile.displayName;
+          if (profile.emails) {
+            newUser.email = profile.emails[0].value;
+          }
           newUser.save(function(err) {
             if (err) {
-              throw err;
+              res.send('Error: ' + err);
             }
             return done(null, newUser);
           });
