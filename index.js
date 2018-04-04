@@ -62,7 +62,7 @@ app.set('view engine', 'ejs');
 
 // Connect with database
 const mongoose = require('mongoose');
-const User = require('./models/User.js');
+const Person = require('./models/Person.js');
 mongoose.connect(config.MONGO_URL);
 
 // Use application-level middleware for common functionality, including
@@ -99,19 +99,19 @@ app.get('/login/facebook/return',
 app.get('/profile',
   require('connect-ensure-login').ensureLoggedIn(),
   (req, res) => {
-    User.find({}, (err, allUsers) => {
+    Person.find({}, (err, allPersons) => {
       if (err) {
         res.send('Error: ' + err);
       } else if (allUsers.length === 0) {
         res.send('No users.');
       } else {
-        res.render('profile', {user: req.user, allUsers: allUsers});
+        res.render('profile', {user: req.user, allPersons: allPersons});
       }
     });
   });
 
 app.get('/profile/:name', (req, res) => {
-  const newUser = new User({
+  const newPerson = new Person({
     name: req.params.name
   });
   newUser.save((err) => {
