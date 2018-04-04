@@ -111,9 +111,11 @@ app.get('/login/facebook/return',
     res.redirect('/');
   });
 
-app.get('/profile', (req, res) => {
-  res.send("This is your profile,");
-});
+app.get('/profile',
+  require('connect-ensure-login').ensureLoggedIn(),
+  (req, res) => {
+    res.send("This is your profile.");
+  });
 
 // app.get('/profile',
 //   require('connect-ensure-login').ensureLoggedIn(),
