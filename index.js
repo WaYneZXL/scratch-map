@@ -83,33 +83,37 @@ app.get('/login/facebook',
   passport.authenticate('facebook'));
 
 app.get('/login/facebook/return',
-  passport.authenticate('facebook', { failureRedirect: '/login' }),
-  function(req, res) {
-    // User.findOne({'id': req.user.id}, (err, user) => {
-    //   if (err) {
-    //     res.send("There was an error.");
-    //   }
-    //   else if (user) {
-    //     res.redirect('/');
-    //   }
-    //   else {
-    //     var newUser = new User({
-    //       'id': req.user.id,
-    //       'name': req.user.displayName,
-    //       'email': req.user.emails[0].value
-    //     });
-    //     newUser.save((err) => {
-    //       if (err) {
-    //         res.send("There was an error.");
-    //       }
-    //       else {
-    //         res.redirect('/');
-    //       }
-    //     });
-    //   }
-    // });
-    res.redirect('/');
-  });
+  passport.authenticate('facebook', { successRedirect: '/',
+                                      failureRedirect: '/login' }));
+
+// app.get('/login/facebook/return',
+//   passport.authenticate('facebook', { failureRedirect: '/login' }),
+//   function(req, res) {
+//     User.findOne({'id': req.user.id}, (err, user) => {
+//       if (err) {
+//         res.send("There was an error.");
+//       }
+//       else if (user) {
+//         res.redirect('/');
+//       }
+//       else {
+//         var newUser = new User({
+//           'id': req.user.id,
+//           'name': req.user.displayName,
+//           'email': req.user.emails[0].value
+//         });
+//         newUser.save((err) => {
+//           if (err) {
+//             res.send("There was an error.");
+//           }
+//           else {
+//             res.redirect('/');
+//           }
+//         });
+//       }
+//     });
+//     res.redirect('/');
+//   });
 
 app.get('/profile',
   require('connect-ensure-login').ensureLoggedIn(),
