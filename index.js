@@ -77,28 +77,6 @@ app.use(require('express-session')({ secret: 'keyboard cat', resave: true, saveU
 app.use(passport.initialize());
 app.use(passport.session());
 
-const testUser1 = new User({
-  name: "Edward",
-  email: "edward@yale.edu"
-});
-
-testUser1.save((err) => {
-  if (err) {
-    console.log(err);
-  }
-});
-
-const testUser2 = new User({
-  name: "Xialong",
-  email: "xialong@yale.edu"
-});
-
-testUser2.save((err) => {
-  if (err) {
-    console.log(err);
-  }
-});
-
 // Define routes.
 app.get('/',
   (req, res) => {
@@ -131,5 +109,17 @@ app.get('/profile',
       }
     });
   });
+
+app.get('/profile/:name', (req, res) => {
+  const newUser = new User({
+    name: req.params.name
+  });
+  newUser.save((err) => {
+    if (err) => {
+      res.send('Error: ' + err);
+    }
+  });
+  res.redirect('/profile');
+});
 
 app.listen(process.env.PORT || 3000);
