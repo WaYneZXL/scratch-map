@@ -9,26 +9,39 @@ passport.use(new FacebookStrategy({
     clientSecret: process.env.CLIENT_SECRET || config.CLIENT_SECRET,
     callbackURL: 'https://blueberry-shortcake-17164.herokuapp.com/login/facebook/return'
   },
-  function(accessToken, refreshToken, profile, done) {
-    User.findOrCreate({name: profile.displayName}, {
-      name: profile.displayName,
-      userid: profile.id},
-      (err, user) => {
-      if (err) {
-        return done(err);
-      }
-      done(null, user);
+  function(token, refreshToken, profile, done) {
+    process.nextTick(() => {
+      User.findOne({ 'facebook.id' : profile.id }, (err, user) => {
+        if (err) {
+          return done(err);
+        }
+        if (user) {
+          return done(null, user);
+        } else {
+          const newUser = new User();
+          newUser.id    = profile.id;
+          newUser.token = token;
+          newUser.name  = profile.name.givenName + ' ' + profile.name.familyName;
+          newUser.email = profile.emails[0].value;
+          newUser.save(function(err) {
+            if (err) {
+              throw err;
+            }
+            return done(null, newUser);
+          });
+        }
+      });
     });
-  }));
+  });
 
 passport.serializeUser((user, done) => {
-  done(null, user);
+    done(null, user.id);
 });
 
 passport.deserializeUser((id, done) => {
-  User.findOne({_id: id.doc._id}, (err, user) => {
-    done(err, user);
-  });
+    User.findById(id, (err, user) => {
+        done(err, user);
+    });
 });
 
 const app = express();
@@ -59,7 +72,9 @@ app.get('/login',
   });
 
 app.get('/login/facebook',
-  passport.authenticate('facebook'));
+  passport.authenticate('facebook', {
+      scope : ['public_profile', 'email']
+    }));
 
 app.get('/login/facebook/return',
   passport.authenticate('facebook', { successRedirect: '/',

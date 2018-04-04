@@ -3,11 +3,10 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 var userSchema = new mongoose.Schema({
+  id: String,
+  token: String,
   name: String,
-  userid: String,
-  updated_at: { type: Date, default: Date.now },
+  email: String
 });
-
-userSchema.statics.findOrCreate = require("find-or-create");
 
 module.exports = mongoose.model('User', userSchema);
