@@ -112,7 +112,7 @@ app.get('/:name', (req, res) => {
   const newPerson = new Person({
     name: req.params.name
   });
-  newUser.save((err) => {
+  newPerson.save((err) => {
     if (err) {
       res.send('Error: ' + err);
     }
