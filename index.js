@@ -99,7 +99,7 @@ app.get('/login/facebook/return',
 app.get('/profile',
   require('connect-ensure-login').ensureLoggedIn(),
   (req, res) => {
-    User.find((err, allUsers) => {
+    User.find().then(err, allUsers) => {
       if (err) {
         res.send('Error: ' + err);
       } else if (allUsers.length === 0) {
