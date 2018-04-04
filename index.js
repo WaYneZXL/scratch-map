@@ -2,6 +2,8 @@ var express = require('express');
 var passport = require('passport');
 var Strategy = require('passport-facebook').Strategy;
 var config = require('./config.js');
+var mongoose = require('mongoose');
+var User = require('./models/User.js');
 
 // Configure the Facebook strategy for use by Passport.
 //
@@ -21,7 +23,7 @@ passport.use(new Strategy({
     // be associated with a user record in the application's database, which
     // allows for account linking and authentication with other identity
     // providers.
-    console.log(profile);
+
     return cb(null, profile);
   }));
 
@@ -50,6 +52,8 @@ var app = express();
 // Configure view engine to render EJS templates.
 app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
+
+mongoose.connect(config.MONGO_URL);
 
 // Use application-level middleware for common functionality, including
 // logging, parsing, and session handling.
@@ -81,7 +85,29 @@ app.get('/login/facebook',
 app.get('/login/facebook/return',
   passport.authenticate('facebook', { failureRedirect: '/login' }),
   function(req, res) {
-    res.redirect('/');
+    User.findOne({'id': req.user.id}, (err, user) => {
+      if (err) {
+        res.send("There was an error.");
+      }
+      else if (user) {
+        res.redirect('/');
+      }
+      else {
+        var newUser = new User({
+          'id': req.user.id,
+          'name': req.user.displayName,
+          'email': req.user.emails[0].value
+        });
+        newUser.save((err) => {
+          if (err) {
+            res.send("There was an error.");
+          }
+          else {
+            res.redirect('/');
+          }
+        });
+      }
+    });
   });
 
 app.get('/profile',
