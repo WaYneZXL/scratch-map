@@ -78,7 +78,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 const testUser = new User({
-  id: "213",
+  // id: "213",
   name: "Kyle Jensen",
   email: "kyle@yale.edu"
 });
