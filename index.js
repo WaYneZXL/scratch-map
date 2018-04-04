@@ -114,11 +114,7 @@ app.get('/login/facebook/return',
 app.get('/profile',
   require('connect-ensure-login').ensureLoggedIn(),
   (req, res) => {
-    if (req.user) {
-      res.render('profile', {user: req.user });
-    } else {
-      res.send("No user");
-    }
+    res.send("No profile.");
   });
 
 // app.get('/profile',
