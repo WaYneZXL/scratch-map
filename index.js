@@ -97,11 +97,11 @@ app.get('/login/facebook/return',
 app.get('/profile',
   require('connect-ensure-login').ensureLoggedIn(),
   (req, res) => {
-    Person.find({}, (err, allPersons) => {
+    Person.find((err, allPersons) => {
       if (err) {
         res.send('Error: ' + err);
-      } else if (allUsers.length === 0) {
-        res.send('No users.');
+      } else if (allPersons.length === 0) {
+        res.send('No other users.');
       } else {
         res.render('profile', {user: req.user, allPersons: allPersons});
       }
