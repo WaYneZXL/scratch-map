@@ -23,6 +23,7 @@
     "ejs": "^2.5.8",
     "express": "^4.16.3",
     "express-session": "^1.15.6",
+    "find-or-create": "^1.1.0",
     "mongoose": "^5.0.12",
     "morgan": "^1.9.0",
     "passport": "^0.4.0",
