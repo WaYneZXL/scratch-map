@@ -1,7 +1,14 @@
-var express = require('express');
-var passport = require('passport');
-var Strategy = require('passport-facebook').Strategy;
-var config = require('./config.js');
+const express = require('express');
+const passport = require('passport');
+const Strategy = require('passport-facebook').Strategy;
+
+// Import configuration
+const config = require('./config.js');
+
+// Import models
+
+
+// Import controllers
 
 // Configure the Facebook strategy for use by Passport.
 //
@@ -15,7 +22,7 @@ passport.use(new Strategy({
     clientSecret: process.env.CLIENT_SECRET || config.CLIENT_SECRET,
     callbackURL: 'https://blueberry-shortcake-17164.herokuapp.com/login/facebook/return'
   },
-  function(accessToken, refreshToken, profile, cb) {
+  (accessToken, refreshToken, profile, cb) => {
     // In this example, the user's Facebook profile is supplied as the user
     // record.  In a production-quality application, the Facebook profile should
     // be associated with a user record in the application's database, which
@@ -35,24 +42,27 @@ passport.use(new Strategy({
 // from the database when deserializing.  However, due to the fact that this
 // example does not have a database, the complete Facebook profile is serialized
 // and deserialized.
-passport.serializeUser(function(user, cb) {
-  cb(null, user);
+passport.serializeUser((user, done) => {
+  done(null, user.id);
 });
 
-passport.deserializeUser(function(obj, cb) {
-  cb(null, obj);
+passport.deserializeUser((id, done) => {
+  User.findById(id, (err, user) => {
+    done(err, user);
+  });
 });
 
 
 // Create a new Express application.
-var app = express();
+const app = express();
 
 // Configure view engine to render EJS templates.
 app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
 
-var mongoose = require('mongoose');
-var User = require('./models/User.js');
+// Connect with database
+const mongoose = require('mongoose');
+const User = require('./models/User.js');
 mongoose.connect(config.MONGO_URL);
 
 // Use application-level middleware for common functionality, including
@@ -67,15 +77,29 @@ app.use(require('express-session')({ secret: 'keyboard cat', resave: true, saveU
 app.use(passport.initialize());
 app.use(passport.session());
 
+function createRandomUser (req, res, next) {
+  const randId = Math.floor(Math.random * 100);
+  const randName = Math.floor(Math.random * 100);
+  const randEmail = Math.floor(Math.random * 100);
+  const randUser = new User({
+    'id': randId,
+    'name': randName,
+    'email': randEmail
+  });
+  randUser.save((err) => {
+    res.send("Error: " + err);
+  });
+  next();
+}
 
 // Define routes.
-app.get('/',
-  function(req, res) {
+app.get('/', createRandomUser,
+  (req, res) => {
     res.render('home', { user: req.user });
   });
 
 app.get('/login',
-  function(req, res){
+  (req, res) => {
     res.render('login');
   });
 
@@ -84,52 +108,13 @@ app.get('/login/facebook',
 
 app.get('/login/facebook/return',
   passport.authenticate('facebook', { successRedirect: '/',
-                                      failureRedirect: '/login' }));
-
-// app.get('/login/facebook/return',
-//   passport.authenticate('facebook', { failureRedirect: '/login' }),
-//   function(req, res) {
-//     User.findOne({'id': req.user.id}, (err, user) => {
-//       if (err) {
-//         res.send("There was an error.");
-//       }
-//       else if (user) {
-//         res.redirect('/');
-//       }
-//       else {
-//         var newUser = new User({
-//           'id': req.user.id,
-//           'name': req.user.displayName,
-//           'email': req.user.emails[0].value
-//         });
-//         newUser.save((err) => {
-//           if (err) {
-//             res.send("There was an error.");
-//           }
-//           else {
-//             res.redirect('/');
-//           }
-//         });
-//       }
-//     });
-//     res.redirect('/');
-//   });
+                                      failureRedirect: '/login',
+                                      failureFlash: true }));
 
 app.get('/profile',
   require('connect-ensure-login').ensureLoggedIn(),
   (req, res) => {
     res.render('profile', {user: req.user });
   });
-
-// app.get('/profile',
-//   require('connect-ensure-login').ensureLoggedIn(),
-//   function(req, res){
-//     var user = req.user;
-//     if (user) {
-//       res.render('profile', { user: req.user });
-//     } else {
-//       res.send("No profile");
-//     }
-//   });
 
 app.listen(process.env.PORT || 3000);
