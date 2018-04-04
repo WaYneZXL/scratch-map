@@ -48,15 +48,13 @@ passport.use(new FacebookStrategy({
     });
   }));
 
-passport.serializeUser((user, done) => {
-    done(null, user.id);
-});
+  passport.serializeUser(function(user, done) {
+    done(null, user);
+  });
 
-passport.deserializeUser((id, done) => {
-    User.findById(id, (err, user) => {
-        done(err, user);
-    });
-});
+  passport.deserializeUser(function(user, done) {
+    done(null, user);
+  });
 
 app.use(passport.initialize());
 app.use(passport.session());
