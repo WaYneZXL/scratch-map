@@ -42,14 +42,12 @@ passport.use(new Strategy({
 // from the database when deserializing.  However, due to the fact that this
 // example does not have a database, the complete Facebook profile is serialized
 // and deserialized.
-passport.serializeUser((user, done) => {
-  done(null, user.id);
+passport.serializeUser(function(user, cb) {
+  cb(null, user);
 });
 
-passport.deserializeUser((id, done) => {
-  User.findById(id, (err, user) => {
-    done(err, user);
-  });
+passport.deserializeUser(function(obj, cb) {
+  cb(null, obj);
 });
 
 
