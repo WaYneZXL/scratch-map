@@ -111,15 +111,19 @@ app.get('/login/facebook/return',
     res.redirect('/');
   });
 
-app.get('/profile',
-  require('connect-ensure-login').ensureLoggedIn(),
-  function(req, res){
-    var user = req.user;
-    if (user) {
-      res.render('profile', { user: req.user });
-    } else {
-      res.send("No profile");
-    }
-  });
+app.get('/profile', (req, res) => {
+  res.send("This is your profile,");
+});
+
+// app.get('/profile',
+//   require('connect-ensure-login').ensureLoggedIn(),
+//   function(req, res){
+//     var user = req.user;
+//     if (user) {
+//       res.render('profile', { user: req.user });
+//     } else {
+//       res.send("No profile");
+//     }
+//   });
 
 app.listen(process.env.PORT || 3000);
