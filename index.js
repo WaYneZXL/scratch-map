@@ -23,7 +23,7 @@ passport.use(new FacebookStrategy({
   },
   function(token, refreshToken, profile, done) {
     process.nextTick(() => {
-      User.findOne({ 'facebook.id' : profile.id }, (err, user) => {
+      User.findOne({ 'user.facebookId' : profile.id }, (err, user) => {
         if (err) {
           return done(err);
         }
@@ -31,7 +31,7 @@ passport.use(new FacebookStrategy({
           return done(null, user);
         } else {
           const newUser = new User();
-          newUser.facebookid    = profile.id;
+          newUser.facebookId    = profile.id;
           newUser.token = token;
           newUser.name  = profile.displayName;
           if (profile.emails) {
