@@ -1,8 +1,20 @@
 const express = require('express');
 const passport = require('passport');
+const mongoose = require('mongoose');
 const FacebookStrategy = require('passport-facebook').Strategy;
-
 const config = require('./config.js');
+const User = require('./models/User.js');
+
+const app = express();
+
+app.use(require('morgan')('combined'));
+app.use(require('cookie-parser')());
+app.use(require('body-parser').urlencoded({ extended: true }));
+app.use(require('express-session')({ secret: 'keyboard cat', resave: true, saveUninitialized: true }));
+
+app.set('views', __dirname + '/views');
+app.set('view engine', 'ejs');
+mongoose.connect(config.MONGO_URL);
 
 passport.use(new FacebookStrategy({
     clientID: process.env.CLIENT_ID || config.CLIENT_ID,
@@ -44,20 +56,6 @@ passport.deserializeUser((id, done) => {
     });
 });
 
-const app = express();
-
-app.set('views', __dirname + '/views');
-app.set('view engine', 'ejs');
-
-const mongoose = require('mongoose');
-const User = require('./models/User.js');
-mongoose.connect(config.MONGO_URL);
-
-app.use(require('morgan')('combined'));
-app.use(require('cookie-parser')());
-app.use(require('body-parser').urlencoded({ extended: true }));
-app.use(require('express-session')({ secret: 'keyboard cat', resave: true, saveUninitialized: true }));
-
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -80,8 +78,6 @@ app.get('/login/facebook/return',
   passport.authenticate('facebook', { successRedirect: '/',
                                       failureRedirect: '/login',
                                       failureFlash: true }));
-
-
 
 app.get('/profile',
   require('connect-ensure-login').ensureLoggedIn(),
