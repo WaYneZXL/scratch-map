@@ -23,7 +23,7 @@ passport.use(new FacebookStrategy({
   },
   function(token, refreshToken, profile, done) {
     process.nextTick(() => {
-      User.findOne({ 'user.facebookId' : profile.id }, (err, user) => {
+      User.findOne({ 'facebookId' : profile.id }, (err, user) => {
         if (err) {
           return done(err);
         }
