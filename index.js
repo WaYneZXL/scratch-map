@@ -112,7 +112,7 @@ app.get('/login/facebook/return',
   });
 
 app.get('/profile',
-  // require('connect-ensure-login').ensureLoggedIn(),
+  require('connect-ensure-login').ensureLoggedIn(),
   function(req, res){
     var user = req.user;
     if (user) {
