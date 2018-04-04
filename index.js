@@ -1,8 +1,6 @@
 const express = require('express');
 const passport = require('passport');
 const FacebookStrategy = require('passport-facebook').Strategy;
-const GoogleStrategy = require('passport-google-oauth').OAuthStrategy;
-const LocalStrategy = require('passport-local').Strategy;
 
 const config = require('./config.js');
 
