@@ -2,7 +2,7 @@
 	<p>Welcome! Please <a href="/login">log in</a>.</p>
 <% } else { %>
 	<p>Hello, <%= user.name %>. View your <a href="/profile">profile</a>.</p>
-	<form action="/" method="get">
+	<form action="/" method="post">
 		<p>Write a post:</p>
 		<input type="text" name="post">
 		<p>Location</p>
