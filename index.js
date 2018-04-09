@@ -69,7 +69,7 @@ app.post('/',
   (req, res) => {
     const post = req.body.post;
     const location = req.body.location;
-    res.render('home', { post: post, location: location });
+    res.render('home', { user: req.user, post: post, location: location });
   });
 
 app.get('/login',
