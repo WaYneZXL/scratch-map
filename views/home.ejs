@@ -9,4 +9,14 @@
 		<input type="text" name="location">
 		<input type="submit" name="submit">
 	</form>
+	<% if (allPosts) { %>
+		<ul>
+			<% allPosts.forEach((post) => { %>
+				<li><%= post.post %></li>
+				<li><%= post.location %></li>
+				<li><%= post.userId %></li>
+				<br>
+			<% }); %>
+		</ul>
+	<% } %>
 <% } %>
