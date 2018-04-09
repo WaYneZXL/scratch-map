@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const FacebookStrategy = require('passport-facebook').Strategy;
 const config = require('./config.js');
 const User = require('./models/User.js');
+const Post = require('./models/Post.js');
 
 const app = express();
 
@@ -62,14 +63,21 @@ app.use(passport.session());
 
 app.get('/',
   (req, res) => {
-    res.render('home', { user: req.user, post: "post", location: "location" });
+    res.render('home', { user: req.user });
   });
 
 app.post('/',
   (req, res) => {
-    const post = req.body.post;
-    const location = req.body.location;
-    res.render('home', { user: req.user, post: post, location: location });
+    const newPost = new Post;
+    newPost.userId = req.user.id;
+    newPost.post = req.body.post;
+    newPost.location = req.body.location;
+    newPost.save((err) => {
+      if (err) {
+        res.send('Error: ' + err);
+      }
+      return res.render('home', { user: req.user });
+    });
   });
 
 app.get('/login',
