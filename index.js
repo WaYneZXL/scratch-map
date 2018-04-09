@@ -63,7 +63,15 @@ app.use(passport.session());
 
 app.get('/',
   (req, res) => {
-    res.render('home', { user: req.user });
+    Post.find((err, allPosts) => {
+      if (err) {
+        res.send('Error: ' + err);
+      } else if (allPosts.length === 0) {
+        res.send('No posts.');
+      } else {
+        res.render('home', {user: req.user, allPosts: allPosts });
+      }
+    });
   });
 
 app.post('/',
@@ -76,7 +84,15 @@ app.post('/',
       if (err) {
         res.send('Error: ' + err);
       }
-      return res.render('home', { user: req.user });
+      Post.find((err, allPosts) => {
+        if (err) {
+          res.send('Error: ' + err);
+        } else if (allPosts.length === 0) {
+          res.send('No posts.');
+        } else {
+          res.render('home', {user: req.user, allPosts: allPosts });
+        }
+      });
     });
   });
 
