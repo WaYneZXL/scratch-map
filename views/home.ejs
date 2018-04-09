@@ -3,3 +3,18 @@
 <% } else { %>
 	<p>Hello, <%= user.name %>. View your <a href="/profile">profile</a>.</p>
 <% } %>
+
+<form action="/" method="post">
+	<p>Write a post:</p>
+	<input type="text" name="post">
+	<p>Location</p>
+	<input type="text" name="location">
+	<input type="submit" name="submit">
+</form>
+
+<% if (post) { %>
+	<ul>
+		<li><%= post %></li>
+		<li><%= location %></li>
+	</ul>
+<% } %>
