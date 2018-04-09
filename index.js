@@ -61,7 +61,7 @@ app.use(passport.session());
 
 app.get('/',
   (req, res) => {
-    res.render('home', { user: req.user });
+    res.render('home', { user: req.user, post: "post", location: "location" });
   });
 
 app.post('/',
