@@ -64,13 +64,13 @@ app.get('/',
     res.render('home', { user: req.user });
   });
 
-app.post('/',
-  (req, res) => {
-    const post = res.body.post;
-    const location = req.body.location;
-    res.render('home', { post: post, location: location });
-  }
-)
+// app.post('/',
+//   (req, res) => {
+//     const post = res.body.post;
+//     const location = req.body.location;
+//     res.render('home', { post: post, location: location });
+//   }
+// )
 
 app.get('/login',
   (req, res) => {
