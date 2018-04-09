@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 var userSchema = new mongoose.Schema({
-  id: String,
+  facebookId: String,
   token: String,
   name: String,
   email: String
