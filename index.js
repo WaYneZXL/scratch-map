@@ -59,36 +59,18 @@ passport.use(new FacebookStrategy({
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use('/',
+
+app.get('/',
   (req, res) => {
-    var post = "No post";
-    var location = "No location";
-    if (req.body.post) {
-      post = req.body.post;
-    }
-    if (req.body.location) {
-      location = req.body.location;
-    }
-    res.render('home', {
-      user: req.user,
-      post: post,
-      location: location
-    });
-  }
-);
-// 
-// app.get('/',
-//   (req, res) => {
-//     res.render('home', { user: req.user, post: "post", location: "location" });
-//   });
-//
-// app.post('/',
-//   (req, res) => {
-//     const post = req.body.post;
-//     const location = req.body.location;
-//     res.render('home', { post: post, location: location });
-//   }
-// )
+    res.render('home', { user: req.user, post: "post", location: "location" });
+  });
+
+app.post('/',
+  (req, res) => {
+    const post = req.body.post;
+    const location = req.body.location;
+    res.render('home', { post: post, location: location });
+  });
 
 app.get('/login',
   (req, res) => {
