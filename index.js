@@ -2,6 +2,7 @@ const express = require('express');
 const passport = require('passport');
 const mongoose = require('mongoose');
 const FacebookStrategy = require('passport-facebook').Strategy;
+// const LocalStrategy = require('passport-local').Strategy;
 const config = require('./config.js');
 const User = require('./models/User.js');
 const Post = require('./models/Post.js');
@@ -17,12 +18,27 @@ app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
 mongoose.connect(config.MONGO_URL);
 
+// passport.use(new LocalStrategy(
+//   function(username, password, done) {
+//     User.findOne({ username: username }, function (err, user) {
+//       if (err) { return done(err); }
+//       if (!user) {
+//         return done(null, false, { message: 'Incorrect username.' });
+//       }
+//       if (!user.validPassword(password)) {
+//         return done(null, false, { message: 'Incorrect password.' });
+//       }
+//       return done(null, user);
+//     });
+//   }
+// ));
+
 passport.use(new FacebookStrategy({
     clientID: process.env.CLIENT_ID || config.CLIENT_ID,
     clientSecret: process.env.CLIENT_SECRET || config.CLIENT_SECRET,
     callbackURL: 'https://blueberry-shortcake-17164.herokuapp.com/login/facebook/return'
   },
-  function(token, refreshToken, profile, done) {
+  (token, refreshToken, profile, done) => {
     process.nextTick(() => {
       User.findOne({ 'facebookId' : profile.id }, (err, user) => {
         if (err) {
