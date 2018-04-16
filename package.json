@@ -1,34 +1,20 @@
 {
-  "name": "scratch-map",
+  "name": "reactexpress",
   "version": "1.0.0",
-  "description": "travel based social networking web application",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
-    "start": "node index.js"
+    "client-install": "cd frontend && npm install",
+    "start": "node server.js",
+    "server": "nodemon server.js",
+    "frontend": "npm start --prefix frontend",
+    "dev": "concurrently \"npm run server\" \"npm run frontend\""
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/khubaibsiddiqui/scratch-map.git"
+  "devDependencies": {
+    "nodemon": "^1.14.6"
   },
-  "author": "Khubaib Siddiqui",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/khubaibsiddiqui/scratch-map/issues"
-  },
-  "homepage": "https://github.com/khubaibsiddiqui/scratch-map#readme",
   "dependencies": {
-    "body-parser": "^1.18.2",
-    "connect-ensure-login": "^0.1.1",
-    "cookie-parser": "^1.4.3",
-    "ejs": "^2.5.8",
-    "express": "^4.16.3",
-    "express-session": "^1.15.6",
-    "find-or-create": "^1.1.0",
-    "mongoose": "^5.0.12",
-    "morgan": "^1.9.0",
-    "passport": "^0.4.0",
-    "passport-facebook": "^2.1.1",
-    "passport-google-oauth": "^1.0.0",
-    "passport-local": "^1.0.0"
+    "concurrently": "^3.5.1",
+    "express": "^4.16.2",
+    "google-map-react": "^0.34.0"
   }
 }
